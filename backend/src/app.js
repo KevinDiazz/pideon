@@ -1,7 +1,6 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-app.use(express.json());
 import morgan from 'morgan';
 import routes from './routes/index.js';
 import errorMiddleware from './middlewares/error.middleware.js';
