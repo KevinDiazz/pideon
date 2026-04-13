@@ -20,7 +20,6 @@ async function main() {
       apellidos: "Sistema",
       email: "admin@pideon.com",
       password_hash: password,
-      telefono: "600000001",
       rol: "admin",
     },
   });
@@ -31,7 +30,6 @@ async function main() {
       apellidos: "Pérez",
       email: "cliente@pideon.com",
       password_hash: password,
-      telefono: "600000002",
       rol: "cliente",
     },
   });
@@ -42,7 +40,6 @@ async function main() {
       apellidos: "Cocinera",
       email: "cocina@pideon.com",
       password_hash: password,
-      telefono: "600000003",
       rol: "cocina",
     },
   });
@@ -53,7 +50,6 @@ async function main() {
       apellidos: "Repartidor",
       email: "repartidor@pideon.com",
       password_hash: password,
-      telefono: "600000004",
       rol: "repartidor",
     },
   });
@@ -152,6 +148,7 @@ async function main() {
       entrega_piso: "2A",
       entrega_ciudad: "Las Palmas",
       entrega_cp: "35001",
+      telefono:"681989989",
       total: 21.0,
       descuento_aplicado: 2.1,
       notas: "Casa amarilla",
