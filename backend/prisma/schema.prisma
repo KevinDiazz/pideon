@@ -71,7 +71,6 @@ model Categoria {
   nombre      String    @unique
   descripcion String?
   activa      Boolean   @default(true)
-  orden       Int       @default(0)
   created_at  DateTime  @default(now())
   updated_at  DateTime   @default(now()) @updatedAt
 
@@ -86,6 +85,7 @@ model Producto {
   descripcion   String?
   precio        Decimal   @db.Decimal(10, 2)
   imagen_url    String?   // 🖼️ Imagen del producto
+  imagen_public_id String?
   disponible    Boolean   @default(true)
   created_at    DateTime  @default(now())
   updated_at    DateTime   @default(now()) @updatedAt
