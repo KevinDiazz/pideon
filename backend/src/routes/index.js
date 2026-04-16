@@ -6,6 +6,7 @@ import { authorize } from "../middlewares/authorize.middleware.js";
 import uploadRoutes from "../modules/upload/upload.routes.js";
 import categoriesRoutes from "../modules/categories/categories.routes.js";
 import productsRoutes from "../modules/products/products.routes.js";
+import ordersRoutes from "../modules/orders/orders.routes.js";
 const router = Router();
 
 router.use("/auth", authRoutes);
@@ -17,4 +18,5 @@ router.get("/admin", authenticate, authorize("admin"), (req, res) => {
 router.use("/upload", uploadRoutes);
 router.use("/categories", categoriesRoutes);
 router.use("/products", productsRoutes);
+router.use("/orders", ordersRoutes);
 export default router;

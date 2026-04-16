@@ -1,16 +1,6 @@
 // src/modules/productos/productos.repository.js
 import prisma from "../../../prisma/config/prisma.js";
 
-//Crear un nuevo producto
-export const createProducto = async (data) => {
-  return await prisma.producto.create({
-    data,
-    include: {
-      categoria: true,
-    },
-  });
-};
-
 //Obtener todos los productos disponibles
 export const getAllProductos = async () => {
   return await prisma.producto.findMany({
@@ -41,6 +31,15 @@ export const getProductoById = async (id) => {
   });
 };
 
+//Crear un nuevo producto
+export const createProducto = async (data) => {
+  return await prisma.producto.create({
+    data,
+    include: {
+      categoria: true,
+    },
+  });
+};
 // Actualizar un producto
 export const updateProducto = async (id, data) => {
   return await prisma.producto.update({
