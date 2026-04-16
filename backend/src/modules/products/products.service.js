@@ -1,7 +1,6 @@
 // src/modules/productos/productos.service.js
 import * as repository from "./products.repository.js";
 import { v2 as cloudinary } from "cloudinary";
-
 /**
  * Obtener todos los productos disponibles
  */
