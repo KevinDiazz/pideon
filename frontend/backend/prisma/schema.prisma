@@ -1,0 +1,203 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// =======================
+// ENUMS
+// =======================
+
+enum Rol {
+  cliente
+  cocina
+  repartidor
+  admin
+}
+
+enum EstadoPedido {
+  pendiente
+  preparacion
+  listo
+  reparto
+  entregado
+}
+
+enum TipoEntrega {
+  domicilio
+  recogida
+}
+
+enum MetodoPago {
+  tarjeta
+  efectivo
+  bizum
+}
+
+enum EstadoPago {
+  pendiente
+  completado
+  fallido
+}
+
+enum TipoDescuento {
+  porcentaje
+}
+
+// =======================
+// MODELOS
+// =======================
+
+model Usuario {
+  id              Int      @id @default(autoincrement())
+  nombre          String
+  apellidos       String
+  email           String   @unique
+  password_hash   String
+  rol             Rol      @default(cliente)
+  activo          Boolean  @default(true)
+  created_at      DateTime @default(now())
+  updated_at      DateTime  @default(now()) @updatedAt
+
+  // Relaciones
+  pedidos         Pedido[]
+  repartos        AsignacionReparto[] @relation("Repartidor")
+}
+
+model Categoria {
+  id          Int       @id @default(autoincrement())
+  nombre      String    @unique
+  descripcion String?
+  activa      Boolean   @default(true)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime   @default(now()) @updatedAt
+
+  // Relaciones
+  productos   Producto[]
+}
+
+model Producto {
+  id            Int       @id @default(autoincrement())
+  categoria_id  Int
+  nombre        String
+  descripcion   String?
+  precio        Decimal   @db.Decimal(10, 2)
+  imagen_url    String?   // 🖼️ Imagen del producto
+  imagen_public_id String?
+  disponible    Boolean   @default(true)
+  created_at    DateTime  @default(now())
+  updated_at    DateTime   @default(now()) @updatedAt
+
+  // Relaciones
+  categoria     Categoria @relation(fields: [categoria_id], references: [id])
+  lineasPedido  LineaPedido[]
+
+  // Índices
+  @@index([categoria_id])
+}
+
+model Pedido {
+  id                    Int           @id @default(autoincrement())
+  usuario_id            Int
+  cupon_id              Int?
+  estado                EstadoPedido  @default(pendiente)
+  tipo_entrega          TipoEntrega
+  telefono              String        @default("000000000")
+  entrega_calle         String?
+  entrega_numero        String?
+  entrega_piso          String?
+  entrega_ciudad        String?
+  entrega_cp            String?
+  total                 Decimal       @db.Decimal(10, 2)
+  descuento_aplicado    Decimal       @db.Decimal(10, 2) @default(0)
+  notas                 String?
+  created_at            DateTime      @default(now())
+  updated_at            DateTime      @default(now()) @updatedAt
+
+  // Relaciones
+  usuario               Usuario       @relation(fields: [usuario_id], references: [id])
+  cupon                 Cupon?        @relation(fields: [cupon_id], references: [id])
+  lineas                LineaPedido[]
+  pago                  Pago?
+  factura               Factura?
+  asignacion_reparto    AsignacionReparto[]
+}
+
+model LineaPedido {
+  id              Int      @id @default(autoincrement())
+  pedido_id       Int
+  producto_id     Int
+  cantidad        Int
+  precio_unitario Decimal  @db.Decimal(10, 2)
+  notas_linea     String?
+
+  // Relaciones
+  pedido          Pedido   @relation(fields: [pedido_id], references: [id])
+  producto        Producto @relation(fields: [producto_id], references: [id])
+
+  // Índices
+  @@index([pedido_id])
+  @@index([producto_id])
+}
+
+model Pago {
+  id                    Int         @id @default(autoincrement())
+  pedido_id             Int         @unique
+  metodo                MetodoPago
+  estado                EstadoPago  @default(pendiente)
+  importe               Decimal     @db.Decimal(10, 2)
+  referencia_externa    String?
+  fecha_pago            DateTime?
+  created_at            DateTime    @default(now())
+  updated_at            DateTime     @default(now()) @updatedAt
+
+  // Relaciones
+  pedido                Pedido      @relation(fields: [pedido_id], references: [id])
+}
+
+model Cupon {
+  id              Int             @id @default(autoincrement())
+  codigo          String          @unique
+  tipo_descuento  TipoDescuento
+  valor           Decimal         @db.Decimal(10, 2)
+  fecha_inicio    DateTime
+  fecha_fin       DateTime
+  usos_maximos    Int?
+  usos_actuales   Int             @default(0)
+  activo          Boolean         @default(true)
+  created_at      DateTime        @default(now())
+  updated_at      DateTime        @default(now()) @updatedAt
+
+  // Relaciones
+  pedidos         Pedido[]
+}
+
+model AsignacionReparto {
+  id              Int      @id @default(autoincrement())
+  pedido_id       Int
+  repartidor_id   Int
+  asignado_en     DateTime @default(now())
+  entregado_en    DateTime?
+  incidencia      String?
+
+  // Relaciones
+  pedido          Pedido   @relation(fields: [pedido_id], references: [id])
+  repartidor      Usuario  @relation("Repartidor", fields: [repartidor_id], references: [id])
+
+  // Índices
+  @@index([pedido_id])
+  @@index([repartidor_id])
+}
+
+model Factura {
+  id              Int      @id @default(autoincrement())
+  pedido_id       Int      @unique
+  numero_factura  String   @unique
+  fecha_emision   DateTime @default(now())
+  pdf_url         String?
+
+  // Relaciones
+  pedido          Pedido   @relation(fields: [pedido_id], references: [id])
+}

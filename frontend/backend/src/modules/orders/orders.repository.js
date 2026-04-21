@@ -7,7 +7,7 @@ export const createPedido = async (data) => {
       data: {
         usuario_id: data.usuario_id,
         cupon_id: data.cupon_id,
-        estado: data.estado || "pendiente",
+        estado: data.estado || "PENDIENTE",
         tipo_entrega: data.tipo_entrega,
         telefono: data.telefono,
         entrega_calle: data.entrega_calle,

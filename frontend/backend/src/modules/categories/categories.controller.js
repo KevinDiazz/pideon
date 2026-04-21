@@ -30,11 +30,12 @@ export const getCategoriaById = async (req, res, next) => {
 // Crear una nueva categoría
 export const createCategoria = async (req, res, next) => {
   try {
-    const { nombre, descripcion } = req.body;
+    const { nombre, descripcion, orden } = req.body;
 
     const categoria = await categoriaService.createCategoria({
       nombre,
-      descripcion: descripcion || null,
+      descripcion,
+      orden: orden !== undefined ? Number(orden) : 0,
     });
 
     res.status(201).json(categoria);

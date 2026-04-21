@@ -237,7 +237,7 @@ export const actualizarEstado = async (pedidoId, nuevoEstado, usuario) => {
 
   // 6. Validar permisos según el rol del usuario
   const permisosPorRol = {
-    cocina: ["pendiente", "preparacion", "listo"],
+    cocina: ["preparacion", "listo"],
     repartidor: ["reparto", "entregado"],
     admin: estadosPermitidos, // Acceso total
   };
