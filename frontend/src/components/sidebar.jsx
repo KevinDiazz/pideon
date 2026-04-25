@@ -72,7 +72,10 @@ const Sidebar = () => {
 
       {isLoading && <p className="text-sm text-amber-900/60">Cargando...</p>}
       {isError && (
-        <p className="text-sm text-red-600">Error al cargar categorías.</p>
+        <p className="text-xs text-amber-900/70 leading-relaxed">
+          El servidor está despertando. Puede tardar entre 30 y 60 segundos en
+          arrancar la primera vez.
+        </p>
       )}
 
       <ul className="space-y-1">
