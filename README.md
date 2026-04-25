@@ -11,19 +11,12 @@ PideON es una aplicación full-stack que cubre el ciclo completo de un pedido en
 1. [Capturas](#capturas)
 2. [Características](#características)
 3. [Stack tecnológico](#stack-tecnológico)
-4. [Estructura del proyecto](#estructura-del-proyecto)
-5. [Requisitos previos](#requisitos-previos)
-6. [Instalación](#instalación)
-7. [Variables de entorno](#variables-de-entorno)
-8. [Comandos disponibles](#comandos-disponibles)
 9. [Roles y permisos](#roles-y-permisos)
 10. [Flujo de un pedido](#flujo-de-un-pedido)
 11. [Modelo de datos](#modelo-de-datos)
 12. [API REST](#api-rest)
 13. [Decisiones técnicas](#decisiones-técnicas)
-14. [Cuentas de prueba](#cuentas-de-prueba)
 15. [Posibles mejoras](#posibles-mejoras)
-16. [Licencia](#licencia)
 
 ---
 
@@ -50,14 +43,13 @@ PideON es una aplicación full-stack que cubre el ciclo completo de un pedido en
 - **Catálogo navegable** con sidebar de categorías y filtros, también en móvil (drawer lateral con overlay).
 - **Carrito persistente** por usuario con cantidades editables y subtotal calculado en cliente.
 - **Checkout con dirección de entrega** (a domicilio o recogida) y registro de teléfono.
-- **Autenticación JWT** con tres roles funcionales (cliente, cocina, repartidor) más administrador.
+- **Autenticación JWT** con cuatro roles funcionales (cliente, cocina, repartidor y administrador).
 - **Panel de cocina**: pedidos pendientes y en preparación, transición de estado en un click.
-- **Panel de repartidor con tres pestañas** (`Disponibles`, `Mis repartos`, `Entregados`) y contadores en vivo. Autoasignación atómica para evitar carreras entre repartidores.
+- **Panel de repartidor con tres pestañas** (`Disponibles`, `Mis repartos`, `Entregados`). Autoasignación atómica para evitar carreras entre repartidores.
 - **Panel de admin** para CRUD de categorías y productos (con subida de imagen a Cloudinary), gestión de pedidos y transición `listo → entregado`.
-- **Factura simplificada en PDF** generada con PDFKit y servida en streaming, descargable por cliente, repartidor y admin para cada pedido entregado. Cumple el formato del RD 1619/2012, con IGIC del 7 % aplicado para Canarias.
-- **UI responsive** mobile-first con TailwindCSS 4. Tablas de admin se renderizan como cards apiladas en pantallas pequeñas.
+- **Factura simplificada en PDF** generada con PDFKit y servida en streaming, descargable por cliente, repartidor y admin para cada pedido entregado.
+- **UI responsive** mobile-first con TailwindCSS 4.
 - **Optimistic updates y refetch en background** en todo el panel operativo (TanStack Query) para sensación instantánea sin perder consistencia.
-
 ---
 
 ## Stack tecnológico
@@ -90,97 +82,6 @@ PideON es una aplicación full-stack que cubre el ciclo completo de un pedido en
 | Axios | 1 | Cliente HTTP con interceptores |
 | TailwindCSS | 4 | Estilos utility-first |
 | lucide-react | 1 | Iconografía |
-
----
-
-## Estructura del proyecto
-
-```
-pideon/
-├── backend/
-│   ├── prisma/
-│   │   ├── schema.prisma          # Modelos y enums
-│   │   ├── migrations/            # Historial de migraciones
-│   │   └── seed.js                # Usuarios y catálogo de prueba
-│   ├── src/
-│   │   ├── server.js              # Punto de entrada (escucha puerto)
-│   │   ├── app.js                 # Configuración de Express
-│   │   ├── routes/index.js        # Montaje de routers por módulo
-│   │   ├── middlewares/           # auth, authorize, error, upload, validation
-│   │   ├── modules/
-│   │   │   ├── auth/              # register, login, /me
-│   │   │   ├── categories/        # CRUD categorías
-│   │   │   ├── products/          # CRUD productos + imagen
-│   │   │   ├── orders/            # Pedidos + factura.pdf.js
-│   │   │   └── upload/            # Subida directa a Cloudinary
-│   │   └── config/                # Cliente Prisma, etc.
-│   └── package.json
-│
-├── frontend/
-│   ├── src/
-│   │   ├── main.jsx               # Bootstrap (QueryClient, Router)
-│   │   ├── App.jsx                # Definición de rutas
-│   │   ├── api/axios.js           # Instancia con interceptores JWT
-│   │   ├── layouts/MainLayout.jsx
-│   │   ├── components/            # Navbar, sidebar, OrderCard, dialogs...
-│   │   ├── pages/                 # menu, carrito, checkout, login, register, misPedidos
-│   │   │   └── panels/            # Admin, Cocina, Repartidor, AdminProducts, AdminCategories, AdminOrders
-│   │   ├── routes/ProtectedRoute.jsx
-│   │   ├── services/              # ordersService, productsService...
-│   │   ├── store/                 # authStore, cartStore, uiStore, repartidorStore
-│   │   └── hooks/usePedidoMutations.js
-│   ├── public/
-│   ├── index.html
-│   └── package.json
-│
-└── README.md
-```
-
----
-
-## Requisitos previos
-
-- **Node.js 20+** y npm.
-- **PostgreSQL 14+** corriendo localmente o accesible por URL.
-- (Opcional) **Cuenta de Cloudinary** si quieres subir imágenes de productos. Sin ella, el upload fallará pero el resto de la app funciona.
-
----
-
-## Instalación
-
-### 1. Clonar y entrar al repositorio
-
-```bash
-git clone <url-del-repo> pideon
-cd pideon
-```
-
-### 2. Backend
-
-```bash
-cd backend
-npm install
-cp .env.example .env          # Si no existe, créalo a partir del bloque de variables de abajo
-# Edita .env con tu DATABASE_URL, JWT_SECRET y, opcionalmente, las claves de Cloudinary
-
-npx prisma migrate deploy     # Aplica migraciones
-npx prisma db seed            # (Opcional) Carga usuarios y catálogo de ejemplo
-npm run dev                   # Arranca en http://localhost:3001
-```
-
-### 3. Frontend
-
-En otra terminal:
-
-```bash
-cd frontend
-npm install
-cp .env.example .env          # O créalo y añade VITE_API_URL=http://localhost:3001/api
-npm run dev                   # Arranca en http://localhost:5173
-```
-
-Abre `http://localhost:5173` y entra con cualquiera de las [cuentas de prueba](#cuentas-de-prueba).
-
 
 
 ## Roles y permisos
