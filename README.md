@@ -7,23 +7,16 @@ PideON es una aplicación full-stack que cubre el ciclo completo de un pedido en
 ---
 
 ## Tabla de contenidos
-
-1. [Video](#video)
-2. [Características](#características)
-3. [Stack tecnológico](#stack-tecnológico)
-9. [Roles y permisos](#roles-y-permisos)
-10. [Flujo de un pedido](#flujo-de-un-pedido)
-11. [Modelo de datos](#modelo-de-datos)
-12. [API REST](#api-rest)
-13. [Decisiones técnicas](#decisiones-técnicas)
-15. [Posibles mejoras](#posibles-mejoras)
+1. [Características](#características)
+2. [Stack tecnológico](#stack-tecnológico)
+3. [Roles y permisos](#roles-y-permisos)
+4. [Flujo de un pedido](#flujo-de-un-pedido)
+5. [Modelo de datos](#modelo-de-datos)
+6. [API REST](#api-rest)
+7. [Decisiones técnicas](#decisiones-técnicas)
+8. [Posibles mejoras](#posibles-mejoras)
 
 ---
-
-## Video
-[Ver video](docs/screenshots/grabación.mp4)
----
-
 ## Características
 
 - **Catálogo navegable** con sidebar de categorías y filtros, también en móvil (drawer lateral con overlay).
