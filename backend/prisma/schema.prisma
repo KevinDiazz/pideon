@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,6 +5,10 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+// =======================
+// ENUMS
+// =======================
 
 enum Rol {
   cliente
@@ -57,10 +56,10 @@ model Usuario {
   apellidos       String
   email           String   @unique
   password_hash   String
-  telefono        String
   rol             Rol      @default(cliente)
   activo          Boolean  @default(true)
   created_at      DateTime @default(now())
+  updated_at      DateTime  @default(now()) @updatedAt
 
   // Relaciones
   pedidos         Pedido[]
@@ -69,26 +68,34 @@ model Usuario {
 
 model Categoria {
   id          Int       @id @default(autoincrement())
-  nombre      String
+  nombre      String    @unique
   descripcion String?
   activa      Boolean   @default(true)
-  orden       Int       @default(0)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime   @default(now()) @updatedAt
 
+  // Relaciones
   productos   Producto[]
 }
 
 model Producto {
-  id          Int       @id @default(autoincrement())
-  categoria_id Int
-  nombre      String
-  descripcion String?
-  precio      Decimal   @db.Decimal(10, 2)
-  disponible  Boolean   @default(true)
-  created_at  DateTime  @default(now())
+  id            Int       @id @default(autoincrement())
+  categoria_id  Int
+  nombre        String
+  descripcion   String?
+  precio        Decimal   @db.Decimal(10, 2)
+  imagen_url    String?   // 🖼️ Imagen del producto
+  imagen_public_id String?
+  disponible    Boolean   @default(true)
+  created_at    DateTime  @default(now())
+  updated_at    DateTime   @default(now()) @updatedAt
 
   // Relaciones
-  categoria   Categoria @relation(fields: [categoria_id], references: [id])
-  lineasPedido LineaPedido[]
+  categoria     Categoria @relation(fields: [categoria_id], references: [id])
+  lineasPedido  LineaPedido[]
+
+  // Índices
+  @@index([categoria_id])
 }
 
 model Pedido {
@@ -97,6 +104,7 @@ model Pedido {
   cupon_id              Int?
   estado                EstadoPedido  @default(pendiente)
   tipo_entrega          TipoEntrega
+  telefono              String        @default("000000000")
   entrega_calle         String?
   entrega_numero        String?
   entrega_piso          String?
@@ -106,7 +114,7 @@ model Pedido {
   descuento_aplicado    Decimal       @db.Decimal(10, 2) @default(0)
   notas                 String?
   created_at            DateTime      @default(now())
-  updated_at            DateTime      @updatedAt
+  updated_at            DateTime      @default(now()) @updatedAt
 
   // Relaciones
   usuario               Usuario       @relation(fields: [usuario_id], references: [id])
@@ -128,6 +136,10 @@ model LineaPedido {
   // Relaciones
   pedido          Pedido   @relation(fields: [pedido_id], references: [id])
   producto        Producto @relation(fields: [producto_id], references: [id])
+
+  // Índices
+  @@index([pedido_id])
+  @@index([producto_id])
 }
 
 model Pago {
@@ -138,6 +150,8 @@ model Pago {
   importe               Decimal     @db.Decimal(10, 2)
   referencia_externa    String?
   fecha_pago            DateTime?
+  created_at            DateTime    @default(now())
+  updated_at            DateTime     @default(now()) @updatedAt
 
   // Relaciones
   pedido                Pedido      @relation(fields: [pedido_id], references: [id])
@@ -153,6 +167,8 @@ model Cupon {
   usos_maximos    Int?
   usos_actuales   Int             @default(0)
   activo          Boolean         @default(true)
+  created_at      DateTime        @default(now())
+  updated_at      DateTime        @default(now()) @updatedAt
 
   // Relaciones
   pedidos         Pedido[]
@@ -169,6 +185,10 @@ model AsignacionReparto {
   // Relaciones
   pedido          Pedido   @relation(fields: [pedido_id], references: [id])
   repartidor      Usuario  @relation("Repartidor", fields: [repartidor_id], references: [id])
+
+  // Índices
+  @@index([pedido_id])
+  @@index([repartidor_id])
 }
 
 model Factura {
