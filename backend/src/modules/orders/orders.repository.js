@@ -194,6 +194,52 @@ export const findByUsuarioId = async (usuarioId) => {
   });
 };
 
+//Obtener pedidos asignados a un repartidor (cualquier estado, p.ej. reparto o entregado)
+export const findByRepartidorId = async (repartidorId) => {
+  return prisma.pedido.findMany({
+    where: {
+      asignacion_reparto: {
+        some: { repartidor_id: repartidorId },
+      },
+    },
+    include: {
+      usuario: {
+        select: {
+          id: true,
+          nombre: true,
+          apellidos: true,
+        },
+      },
+      lineas: {
+        include: {
+          producto: {
+            select: {
+              id: true,
+              nombre: true,
+              precio: true,
+            },
+          },
+        },
+      },
+      pago: true,
+      asignacion_reparto: {
+        include: {
+          repartidor: {
+            select: {
+              id: true,
+              nombre: true,
+              apellidos: true,
+            },
+          },
+        },
+      },
+    },
+    orderBy: {
+      updated_at: "desc",
+    },
+  });
+};
+
 //Obtener un pedido por su ID
 export const findById = async (pedidoId) => {
   return prisma.pedido.findUnique({

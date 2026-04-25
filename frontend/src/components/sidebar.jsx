@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { UtensilsCrossed, X } from "lucide-react";
 import { categoriesService } from "../services/categoriesService";
@@ -11,6 +12,8 @@ import { useUiStore } from "../store/uiStore";
  *    Se cierra con X, tocando el backdrop, pulsando Esc o eligiendo categoría.
  */
 const Sidebar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const { selectedCategoryId, setSelectedCategoryId } = useUiStore();
   const sidebarOpen = useUiStore((s) => s.sidebarOpen);
   const closeSidebar = useUiStore((s) => s.closeSidebar);
@@ -43,6 +46,11 @@ const Sidebar = () => {
   const pick = (id) => {
     setSelectedCategoryId(id);
     closeSidebar();
+    // Si el usuario está en otra página (carrito, checkout, mis-pedidos...),
+    // al elegir una categoría lo llevamos a la carta para que vea los productos.
+    if (location.pathname !== "/") {
+      navigate("/");
+    }
   };
 
   const content = (

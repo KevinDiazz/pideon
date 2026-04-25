@@ -151,6 +151,11 @@ export const obtenerPorUsuario = async (usuarioId) => {
   return await pedidosRepository.findByUsuarioId(usuarioId);
 };
 
+//Obtener pedidos asignados al repartidor autenticado (para su histórico)
+export const obtenerPorRepartidor = async (repartidorId) => {
+  return await pedidosRepository.findByRepartidorId(repartidorId);
+};
+
 //Obtener un pedido por ID con validación de acceso
 export const obtenerPorId = async (pedidoId, usuario) => {
   const pedido = await pedidosRepository.findById(pedidoId);

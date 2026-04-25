@@ -39,6 +39,14 @@ router.get(
   controller.obtenerPedidosListos,
 );
 
+// Pedidos asignados al repartidor autenticado (reparto + entregado)
+router.get(
+  "/mis-repartos",
+  authenticate,
+  authorize("repartidor", "admin"),
+  controller.obtenerMisRepartos,
+);
+
 // Obtener todos los pedidos (admin/cocina)
 router.get(
   "/",
@@ -57,6 +65,14 @@ router.get(
   authenticate,
   authorize("admin", "cocina", "repartidor"),
   controller.obtenerPorId,
+);
+
+// Descargar factura PDF de un pedido entregado
+router.get(
+  "/:id/factura",
+  authenticate,
+  authorize("admin", "cocina", "repartidor", "cliente"),
+  controller.descargarFactura,
 );
 
 /* =====================================================

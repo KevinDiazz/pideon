@@ -4,12 +4,17 @@ import { ordersService } from "../services/ordersService";
 /**
  * Configuración estándar para queries de pedidos: polling corto + refresca
  * al volver a la pestaña + siempre stale para que invalidate refresque ya.
+ *
+ * `placeholderData: (prev) => prev` mantiene visible la última respuesta
+ * mientras se refetchea, así no se parpadea a "0" o a skeleton al remontar
+ * el componente (p.ej. al volver de / → redirect → /repartidor).
  */
 export const pedidoQueryOptions = {
   refetchInterval: 5_000,
   refetchOnWindowFocus: true,
   refetchOnReconnect: true,
   staleTime: 0,
+  placeholderData: (prev) => prev,
 };
 
 /**

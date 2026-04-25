@@ -45,7 +45,7 @@ const OrderCard = ({ pedido, actions }) => (
 
     {pedido.tipo_entrega === "domicilio" && pedido.entrega_calle && (
       <p className="text-sm text-amber-900/80 mb-3 break-words">
-        📍 {pedido.entrega_calle} {pedido.entrega_numero}
+        📍 {pedido.entrega_calle + ", nº"}{pedido.entrega_numero}
         {pedido.entrega_piso ? `, ${pedido.entrega_piso}` : ""} —{" "}
         {pedido.entrega_cp} {pedido.entrega_ciudad}
       </p>

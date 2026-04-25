@@ -16,6 +16,7 @@ const queryClient = new QueryClient({
   },
 });
 
+// eslint-disable-next-line react-refresh/only-export-components
 function Bootstrap() {
   const loadMe = useAuthStore((s) => s.loadMe);
   useEffect(() => {

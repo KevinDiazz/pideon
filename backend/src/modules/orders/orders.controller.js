@@ -1,5 +1,6 @@
 // src/modules/pedidos/pedidos.controller.js
 import * as pedidosService from "./orders.service.js";
+import { streamFacturaPedido } from "./factura.pdf.js";
 
 //Crear un nuevo pedido
 export const crearPedido = async (req, res, next) => {
@@ -64,6 +65,21 @@ export const obtenerMisPedidos = async (req, res, next) => {
   try {
     const usuarioId = req.user.id;
     const pedidos = await pedidosService.obtenerPorUsuario(usuarioId);
+
+    return res.status(200).json({
+      success: true,
+      data: pedidos,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+//Obtener los pedidos asignados al repartidor autenticado
+export const obtenerMisRepartos = async (req, res, next) => {
+  try {
+    const repartidorId = req.user.id;
+    const pedidos = await pedidosService.obtenerPorRepartidor(repartidorId);
 
     return res.status(200).json({
       success: true,
@@ -149,6 +165,40 @@ export const asignarRepartidor = async (req, res, next) => {
       message: "Pedido asignado correctamente al repartidor",
       data: asignacion,
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+//Descargar factura del pedido en PDF (solo si está entregado)
+export const descargarFactura = async (req, res, next) => {
+  try {
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: "ID inválido",
+      });
+    }
+
+    const usuario = req.user;
+    const pedido = await pedidosService.obtenerPorId(id, usuario);
+
+    if (pedido.estado !== "entregado") {
+      return res.status(400).json({
+        success: false,
+        message:
+          "La factura solo está disponible para pedidos en estado 'entregado'.",
+      });
+    }
+
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="factura-pedido-${pedido.id}.pdf"`,
+    );
+
+    streamFacturaPedido(pedido, res);
   } catch (error) {
     next(error);
   }

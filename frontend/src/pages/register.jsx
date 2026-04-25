@@ -12,18 +12,32 @@ const Register = () => {
     apellidos: "",
     email: "",
     password: "",
+    password2: "",
   });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
+  // Solo mostramos el mensaje de "no coinciden" cuando el usuario ya ha
+  // empezado a escribir la confirmación, para no gritarle en cuanto llega.
+  const passwordsMismatch =
+    form.password2.length > 0 && form.password !== form.password2;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
+
+    if (form.password !== form.password2) {
+      setError("Las contraseñas no coinciden.");
+      return;
+    }
+
     setLoading(true);
     try {
-      await register(form);
+      // El backend no necesita password2, se lo quitamos.
+      const { password2: _ignore, ...payload } = form;
+      await register(payload);
       // Login automático tras registro
       await login({ email: form.email, password: form.password });
       navigate("/");
@@ -111,6 +125,31 @@ const Register = () => {
               />
             </div>
 
+            <div>
+              <label className="block text-sm font-semibold text-amber-900 mb-1">
+                Repite la contraseña
+              </label>
+              <input
+                type="password"
+                name="password2"
+                required
+                minLength={6}
+                value={form.password2}
+                onChange={onChange}
+                aria-invalid={passwordsMismatch}
+                className={`w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 ${
+                  passwordsMismatch
+                    ? "border-red-300 focus:ring-red-400"
+                    : "border-orange-200 focus:ring-orange-400"
+                }`}
+              />
+              {passwordsMismatch && (
+                <p className="text-xs text-red-600 mt-1">
+                  Las contraseñas no coinciden.
+                </p>
+              )}
+            </div>
+
             {error && (
               <div className="bg-red-50 text-red-700 border border-red-200 rounded-lg px-3 py-2 text-sm">
                 {error}
@@ -119,7 +158,7 @@ const Register = () => {
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || passwordsMismatch}
               className="w-full bg-orange-600 hover:bg-orange-700 disabled:opacity-60 text-white font-semibold py-2.5 rounded-lg transition"
             >
               {loading ? "Creando cuenta..." : "Crear cuenta"}
