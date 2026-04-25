@@ -8,7 +8,7 @@ PideON es una aplicación full-stack que cubre el ciclo completo de un pedido en
 
 ## Tabla de contenidos
 
-1. [Capturas](#capturas)
+1. [Video](#video)
 2. [Características](#características)
 3. [Stack tecnológico](#stack-tecnológico)
 9. [Roles y permisos](#roles-y-permisos)
@@ -20,22 +20,8 @@ PideON es una aplicación full-stack que cubre el ciclo completo de un pedido en
 
 ---
 
-## Capturas
-
-> Las imágenes se cargarán desde `docs/screenshots/`. Sustitúyelas por las capturas reales de tu instalación.
-
-| Pantalla | Captura |
-| --- | --- |
-| Carta de productos | ![Carta](docs/screenshots/menu.png) |
-| Carrito | ![Carrito](docs/screenshots/carrito.png) |
-| Checkout | ![Checkout](docs/screenshots/checkout.png) |
-| Mis pedidos (cliente) | ![Mis pedidos](docs/screenshots/mis-pedidos.png) |
-| Panel de cocina | ![Cocina](docs/screenshots/cocina.png) |
-| Panel de repartidor | ![Repartidor](docs/screenshots/repartidor.png) |
-| Panel de admin — pedidos | ![Admin pedidos](docs/screenshots/admin-pedidos.png) |
-| Panel de admin — productos | ![Admin productos](docs/screenshots/admin-productos.png) |
-| Factura PDF | ![Factura](docs/screenshots/factura.png) |
-
+## Video
+[Ver video](docs/screenshots/grabación.mp4)
 ---
 
 ## Características
