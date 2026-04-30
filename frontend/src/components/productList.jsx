@@ -5,7 +5,6 @@ import { productsService } from "../services/productsService";
 import { useCartStore } from "../store/cartStore";
 import { useUiStore } from "../store/uiStore";
 import { useAuthStore } from "../store/authStore";
-import ColdStartLoader from "./ColdStartLoader";
 
 const formatPrecio = (v) => `${Number(v).toFixed(2)} €`;
 
@@ -63,7 +62,7 @@ const ProductList = () => {
     user?.rol === "repartidor";
   const puedeComprar = !esStaff;
 
-  const { data: productos = [], isLoading, isError, refetch } = useQuery({
+  const { data: productos = [], isLoading, isError } = useQuery({
     queryKey: ["products"],
     queryFn: productsService.list,
   });
@@ -88,7 +87,11 @@ const ProductList = () => {
   }
 
   if (isError) {
-    return <ColdStartLoader onRetry={refetch} />;
+    return (
+      <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg">
+        No se pudieron cargar los productos.
+      </div>
+    );
   }
 
   if (filtered.length === 0) {

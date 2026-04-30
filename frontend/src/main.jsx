@@ -11,17 +11,7 @@ const queryClient = new QueryClient({
     queries: {
       refetchOnWindowFocus: false,
       staleTime: 60_000,
-      // En cold start de Render el backend tarda 30-60s en arrancar.
-      // Reintentamos varias veces solo cuando el error parece ser de red
-      // (Network Error, sin response). Para errores con respuesta del
-      // servidor (4xx/5xx) basta 1 reintento.
-      retry: (failureCount, error) => {
-        const isNetworkError = !error?.response;
-        if (isNetworkError) return failureCount < 6;
-        return failureCount < 1;
-      },
-      retryDelay: (attemptIndex) =>
-        Math.min(1000 * 2 ** attemptIndex, 8000),
+      retry: 1,
     },
   },
 });
