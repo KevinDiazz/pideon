@@ -25,18 +25,6 @@
 Aplicación web que cubre **el ciclo completo de un pedido en un restaurante**: el cliente navega la carta y construye su carrito, cocina marca los pedidos como preparados, los repartidores se autoasignan los disponibles y los entregan, y el administrador gestiona la carta y supervisa todo el flujo. Una vez entregado, todos los actores pueden descargar la factura simplificada en PDF.
 
 > 🔗 **Pruébalo en vivo:** [pideon.vercel.app](https://pideon.vercel.app)
->
-> ⚠️ La API está en el plan gratuito de Render — la primera petición tras 15 min sin uso tarda 30-60 s en despertar. Hay un splash con cronómetro que te avisa.
-
----
-
-## Capturas
-
-> *Pendiente: añadir screenshots de la carta, panel de cocina, panel de repartidor y factura PDF en `docs/screenshots/` y referenciarlas aquí.*
-
-| Catálogo (cliente) | Panel cocina | Panel repartidor |
-|---|---|---|
-| _carta + carrito_ | _pedidos en curso_ | _autoasignación + entregados_ |
 
 ---
 
@@ -60,70 +48,9 @@ Aplicación web que cubre **el ciclo completo de un pedido en un restaurante**: 
 
 **Backend** — Node 20+ · Express 5 · Prisma 7 · PostgreSQL · JWT + bcryptjs · Helmet · Multer + Cloudinary · PDFKit
 
-**Testing** — Jest · Supertest · babel-jest (12 archivos: unitarios + integración)
+**Testing** — Jest · Supertest  (unitarios + integración)
 
 **Infraestructura** — Vercel (frontend) · Render (API) · Neon (Postgres serverless en Frankfurt) · Cloudinary (imágenes) · GitHub (CI por push)
-
----
-
-## 🚀 Cómo ejecutarlo en local
-
-Necesitas **Node.js 20+**, **PostgreSQL** y una cuenta de **Cloudinary** (para imágenes).
-
-### 1. Clonar e instalar
-
-```bash
-git clone https://github.com/KevinDiazz/pideon.git
-cd pideon
-```
-
-### 2. Backend
-
-```bash
-cd backend
-npm install
-cp .env.example .env   # rellenar variables (ver más abajo)
-npx prisma migrate deploy
-npm run dev            # http://localhost:3001
-```
-
-Variables de entorno mínimas en `backend/.env`:
-
-```env
-DATABASE_URL="postgresql://USER:PASS@HOST:5432/pideon?schema=public"
-JWT_SECRET="cualquier-cadena-larga-aleatoria"
-CLOUDINARY_CLOUD_NAME="..."
-CLOUDINARY_API_KEY="..."
-CLOUDINARY_API_SECRET="..."
-```
-
-### 3. Frontend
-
-```bash
-cd frontend
-npm install
-echo 'VITE_API_URL=http://localhost:3001/api' > .env
-npm run dev            # http://localhost:5173
-```
-
-### 4. (Opcional) Datos de prueba
-
-```bash
-cd backend
-node prisma/seed.js    # crea usuarios, categorías y productos de ejemplo
-```
-
----
-
-## 🧪 Tests
-
-```bash
-cd backend
-npm test                   # jest
-npm run test:coverage      # informe de cobertura
-```
-
-12 archivos de test repartidos entre **unitarios** (services, controllers, middlewares) e **integración** (routes con supertest), mockeando repositorios y middlewares de auth.
 
 ---
 
@@ -252,17 +179,6 @@ Todas las rutas bajo `/api`. Header de autenticación: `Authorization: Bearer <j
 | `GET` | `/api/health` | público | Healthcheck |
 
 </details>
-
----
-
-## 🗺️ Roadmap
-
-- [ ] Integración real de pago con Stripe (las tablas `Pago` ya están preparadas)
-- [ ] Notificaciones en tiempo real (WebSockets / SSE) en lugar de polling
-- [ ] Persistencia de la factura en Cloudinary o S3
-- [ ] Panel de métricas (ventas por día, ticket medio, productos top)
-- [ ] Panel de camarero (tomar comandas en mesa)
-- [ ] Tests E2E con Playwright
 
 ---
 
