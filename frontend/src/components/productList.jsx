@@ -5,6 +5,7 @@ import { productsService } from "../services/productsService";
 import { useCartStore } from "../store/cartStore";
 import { useUiStore } from "../store/uiStore";
 import { useAuthStore } from "../store/authStore";
+import ColdStartLoader from "./ColdStartLoader";
 
 const formatPrecio = (v) => `${Number(v).toFixed(2)} €`;
 
@@ -87,23 +88,7 @@ const ProductList = () => {
   }
 
   if (isError) {
-    return (
-      <div className="bg-amber-50 border border-amber-200 text-amber-900 p-5 rounded-2xl">
-        <p className="font-semibold mb-1">El servidor está despertando…</p>
-        <p className="text-sm text-amber-900/80 mb-3">
-          Esta app está desplegada en un plan gratuito de Render que se duerme
-          tras unos minutos sin uso. La primera petición puede tardar entre{" "}
-          <strong>30 y 60 segundos</strong> mientras el backend arranca de nuevo.
-          Espera un momento y vuelve a intentarlo.
-        </p>
-        <button
-          onClick={() => refetch()}
-          className="bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold px-4 py-2 rounded-lg shadow-sm"
-        >
-          Reintentar
-        </button>
-      </div>
-    );
+    return <ColdStartLoader onRetry={refetch} />;
   }
 
   if (filtered.length === 0) {
