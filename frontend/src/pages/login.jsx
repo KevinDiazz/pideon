@@ -20,15 +20,20 @@ const Login = () => {
     setLoading(true);
     try {
       const user = await login({ email, password });
-      // Redirección por rol si venían por un panel protegido
-      if (from !== "/") {
+      // Para roles "staff", redirigimos SIEMPRE a su propio panel,
+      // ignorando el `from` que pudiera arrastrar de la sesión anterior.
+      // Evita casos como: repartidor hace logout en /repartidor → admin
+      // se loguea y se queda viendo el panel de repartidor.
+      const staffHome = {
+        admin: "/admin",
+        cocina: "/cocina",
+        repartidor: "/repartidor",
+      }[user.rol];
+
+      if (staffHome) {
+        navigate(staffHome, { replace: true });
+      } else if (from !== "/" && from !== "/login") {
         navigate(from, { replace: true });
-      } else if (user.rol === "admin") {
-        navigate("/admin");
-      } else if (user.rol === "cocina") {
-        navigate("/cocina");
-      } else if (user.rol === "repartidor") {
-        navigate("/repartidor");
       } else {
         navigate("/");
       }
