@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import { UtensilsCrossed, X } from "lucide-react";
 import { categoriesService } from "../services/categoriesService";
 import { useUiStore } from "../store/uiStore";
-import ColdStartLoader from "./ColdStartLoader";
 
 /**
  * Sidebar de categorías con dos modos:
@@ -19,7 +18,7 @@ const Sidebar = () => {
   const sidebarOpen = useUiStore((s) => s.sidebarOpen);
   const closeSidebar = useUiStore((s) => s.closeSidebar);
 
-  const { data: categorias = [], isLoading, isError, refetch } = useQuery({
+  const { data: categorias = [], isLoading, isError } = useQuery({
     queryKey: ["categories"],
     queryFn: categoriesService.list,
   });
@@ -72,7 +71,9 @@ const Sidebar = () => {
       </div>
 
       {isLoading && <p className="text-sm text-amber-900/60">Cargando...</p>}
-      {isError && <ColdStartLoader onRetry={refetch} variant="compact" />}
+      {isError && (
+        <p className="text-sm text-red-600">Error al cargar categorías.</p>
+      )}
 
       <ul className="space-y-1">
         <li>

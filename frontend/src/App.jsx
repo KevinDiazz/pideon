@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import BackendWakeupSplash from "./components/BackendWakeupSplash";
 
 import Menu from "./pages/menu";
 import Carrito from "./pages/carrito";
@@ -16,6 +17,8 @@ import Repartidor from "./pages/panels/Repartidor";
 
 function App() {
   return (
+    <>
+    <BackendWakeupSplash />
     <Routes>
       {/* 🌐 PÚBLICO */}
       <Route
@@ -97,6 +100,7 @@ function App() {
       {/* 404 → home */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+    </>
   );
 }
 
