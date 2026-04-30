@@ -6,14 +6,8 @@ import { authorize } from "../../middlewares/authorize.middleware.js";
 
 const router = Router();
 
-/* =====================================================
-   📦 CREACIÓN DE PEDIDOS
-===================================================== */
 router.post("/", authenticate, authorize("cliente"), controller.crearPedido);
 
-/* =====================================================
-   📋 CONSULTAS GENERALES
-===================================================== */
 
 // Pedidos del cliente autenticado
 router.get(
@@ -55,9 +49,6 @@ router.get(
   controller.obtenerTodos,
 );
 
-/* =====================================================
-   🔍 CONSULTA POR ID
-===================================================== */
 
 // Solo acepta IDs numéricos para evitar conflictos
 router.get(
@@ -75,9 +66,6 @@ router.get(
   controller.descargarFactura,
 );
 
-/* =====================================================
-   🔄 ACCIONES SOBRE PEDIDOS
-===================================================== */
 
 // Actualizar estado del pedido
 router.patch(
@@ -95,15 +83,4 @@ router.patch(
   controller.asignarRepartidor,
 );
 
-/* =====================================================
-   ❌ CANCELACIÓN DE PEDIDOS
-===================================================== */
-
-/*router.delete(
-  "/:id",
-  authenticate,
-  authorize("admin"),
-  controller.cancelarPedido,
-);
-*/
 export default router;

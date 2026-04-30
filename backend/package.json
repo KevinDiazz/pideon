@@ -7,11 +7,19 @@
     "seed": "node prisma/seed.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "dev": "nodemon src/server.js",
     "build": "prisma generate",
     "postinstall": "prisma generate",
     "start": "prisma migrate deploy && node src/server.js"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    }
   },
   "keywords": [],
   "author": "",
@@ -34,8 +42,12 @@
     "pdfkit": "^0.18.0"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.29.2",
     "@types/node": "^25.6.0",
+    "babel-jest": "^30.3.0",
+    "jest": "^30.3.0",
     "nodemon": "^3.1.14",
-    "prisma": "^7.7.0"
+    "prisma": "^7.7.0",
+    "supertest": "^7.2.2"
   }
 }
