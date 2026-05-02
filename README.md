@@ -25,7 +25,8 @@
 Aplicación web que cubre **el ciclo completo de un pedido en un restaurante**: el cliente navega la carta y construye su carrito, cocina marca los pedidos como preparados, los repartidores se autoasignan los disponibles y los entregan, y el administrador gestiona la carta y supervisa todo el flujo. Una vez entregado, se genera la factura simplificada en PDF.
 
 > 🔗 **Pruébalo en vivo:** [pideon.vercel.app](https://pideon.vercel.app)
-
+---
+[![Demo del proyecto](https://img.youtube.com/vi/nvpqZsZIjyM/0.jpg)](https://www.youtube.com/watch?v=nvpqZsZIjyM)
 ---
 
 ## ✨ Características
