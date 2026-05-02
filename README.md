@@ -26,7 +26,8 @@ Aplicación web que cubre **el ciclo completo de un pedido en un restaurante**: 
 
 > 🔗 **Pruébalo en vivo:** [pideon.vercel.app](https://pideon.vercel.app)
 ---
-[![Demo del proyecto](https://img.youtube.com/vi/nvpqZsZIjyM/0.jpg)](https://www.youtube.com/watch?v=nvpqZsZIjyM)
+## 🎥 Demo
+[![Demo](https://img.youtube.com/vi/nvpqZsZIjyM/maxresdefault.jpg)](https://www.youtube.com/watch?v=nvpqZsZIjyM)
 ---
 
 ## ✨ Características
