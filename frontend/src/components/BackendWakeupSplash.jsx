@@ -71,7 +71,7 @@ const BackendWakeupSplash = () => {
         <div className="text-5xl mb-2">🍕</div>
         <h1 className="text-3xl font-black text-orange-600 mb-1">PideON</h1>
         <p className="text-amber-900/70 text-sm mb-6">
-          Cargando la app...
+          Cargando la web...
         </p>
 
         <div className="flex items-center justify-center gap-2 mb-4">
